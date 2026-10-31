@@ -421,10 +421,10 @@
     const h = canvasElement.height;
     const s = w / 640; // scale with camera resolution
 
-    // Bones - clean, refined structural lines
+    // Bones - tender young banana leaf green (child leaf / fresh sprout)
     ctx.lineCap = 'round';
-    ctx.lineWidth = 2.0 * s;
-    ctx.strokeStyle = '#22C55E';
+    ctx.lineWidth = 2.8 * s;
+    ctx.strokeStyle = '#98E332';
     connections.forEach(([i, j]) => {
       ctx.beginPath();
       ctx.moveTo(landmarks[i].x * w, landmarks[i].y * h);
@@ -432,9 +432,9 @@
       ctx.stroke();
     });
 
-    // Pinch distance: precision caliper line between thumb tip (4) and index tip (8) in Mode 2
+    // Pinch distance: caliper line between thumb tip (4) and index tip (8) in Mode 2
     if (currentMode === 2) {
-      ctx.lineWidth = 2.5 * s;
+      ctx.lineWidth = 3.0 * s;
       ctx.strokeStyle = '#EF4444';
       ctx.beginPath();
       ctx.moveTo(landmarks[4].x * w, landmarks[4].y * h);
@@ -442,17 +442,16 @@
       ctx.stroke();
     }
 
-    // Joints - smaller, sharper precision points (reduced from 5.5 to 2.8)
+    // Joints - balanced point size (increased back to 4.0 for clear visibility, 4.8 for active pinch)
     landmarks.forEach((pt, index) => {
-      // In Pinch mode, highlight the two active fingertips (4 and 8)
       const isPinchPoint = (currentMode === 2 && (index === 4 || index === 8));
-      const radius = isPinchPoint ? (3.8 * s) : (2.8 * s);
+      const radius = isPinchPoint ? (4.8 * s) : (4.0 * s);
 
       ctx.beginPath();
       ctx.arc(pt.x * w, pt.y * h, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = isPinchPoint ? '#EF4444' : '#DC2626';
+      ctx.fillStyle = isPinchPoint ? '#EF4444' : '#FF3333';
       ctx.fill();
-      ctx.lineWidth = 1.0 * s;
+      ctx.lineWidth = 1.3 * s;
       ctx.strokeStyle = '#FFFFFF';
       ctx.stroke();
     });
