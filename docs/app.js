@@ -24,7 +24,8 @@
   const modePanes = {
     1: document.getElementById('paneMode1'),
     2: document.getElementById('paneMode2'),
-    3: document.getElementById('paneMode3')
+    3: document.getElementById('paneMode3'),
+    4: document.getElementById('paneMode4')
   };
 
   const videoElement = document.getElementById('webcamVideo');

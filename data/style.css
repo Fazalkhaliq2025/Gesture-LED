@@ -9,8 +9,8 @@
   --text: #ECEDEF;
   --muted: #9AA0AA;
   --dim: #7E8591;
-  --led-on: #FFB020;
-  --led-on-line: #FFC857;
+  --led-on: #2BFF00;
+  --led-on-line: #52FF33;
   --led-off: #26282D;
   --ok: #3DD68C;
   --bad: #F2555A;
@@ -96,11 +96,14 @@ body {
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  overflow: hidden;
+  padding: 0;
 }
 
-.brand-svg {
-  width: 20px;
-  height: 20px;
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
@@ -179,6 +182,12 @@ body {
   color: var(--muted);
   text-decoration: none;
   transition: color .12s, border-color .12s, background .12s
+}
+
+.btn-icon-link svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 .btn-icon-link:hover {
@@ -357,7 +366,7 @@ body {
 
 .mode-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px;
   padding: 4px;
   background: var(--surface);
@@ -592,7 +601,7 @@ body {
 
 .finger-chip-unit.extended {
   border-color: var(--led-on);
-  background: rgba(255, 176, 32, .12)
+  background: rgba(43, 255, 0, .12)
 }
 
 .chip-name {
@@ -653,6 +662,94 @@ body {
   color: var(--muted);
   text-decoration: underline;
   text-underline-offset: 2px
+}
+
+/* Mode 4: Wokwi Simulation & Circuit */
+.circuit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.circuit-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--raised);
+}
+
+.circuit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.circuit-table th {
+  background: var(--surface);
+  color: var(--dim);
+  font-weight: 600;
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .04em;
+}
+
+.circuit-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+}
+
+.circuit-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pin-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-family: var(--mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--led-on);
+}
+
+.wokwi-action-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.btn-wokwi {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 34px;
+  background: #1976D2;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .12s;
+}
+
+.btn-wokwi:hover {
+  background: #1565C0;
 }
 
 /* Small screens: let the page scroll instead of cramming */
