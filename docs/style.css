@@ -909,3 +909,34 @@ body {
   flex: 1 1 100% !important;
   width: 100% !important;
 }
+
+
+/* ==============================================================================
+   ESP FLASHER MODAL WI-FI REMOVAL
+   Strictly suppress and hide Wi-Fi setup & improv provisioning UI
+   ============================================================================== */
+.__efb-succ-btn-wifi,
+#__efb-succ-open-wifi,
+.__efb-wifi-card,
+.__efb-wifi-header,
+.__efb-wifi-form,
+.__efb-wifi-btns,
+.__efb-wifi-status {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.__efb-succ-actions {
+  display: flex !important;
+}
+
+.__efb-succ-btn-serial {
+  flex: 1 1 100% !important;
+  width: 100% !important;
+}

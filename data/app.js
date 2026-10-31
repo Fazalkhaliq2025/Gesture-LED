@@ -55,14 +55,14 @@
   const chipPinky = document.getElementById('chipPinky');
   const cmdMode3 = document.getElementById('cmdMode3');
 
-  // Virtual Hardware LEDs (0 to 4)
+  // Virtual Hardware LEDs (0 to 4 - null-safe)
   const virtualLeds = [
     document.getElementById('led0'),
     document.getElementById('led1'),
     document.getElementById('led2'),
     document.getElementById('led3'),
     document.getElementById('led4')
-  ];
+  ].filter(Boolean);
 
   // Schematic Circuit Diagram LEDs (0 to 4)
   const diagLeds = [
