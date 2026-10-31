@@ -599,12 +599,101 @@ body {
   font-weight: 500
 }
 
-/* Mode 3 */
+/* Mode 3 Counter & Stage Meter */
+.counter-stage-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.counter-val-group {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 .counter-box {
-  font-size: 64px;
-  font-weight: 600;
+  font-size: 52px;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: -.03em
+  letter-spacing: -.03em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-max {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.counter-meter-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.meter-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  transition: color 60ms ease;
+}
+
+.counter-stages {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+
+.stage-seg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  transition: background 60ms ease, border-color 60ms ease;
+}
+
+.stage-seg.active {
+  background: rgba(43, 255, 0, 0.12);
+  border-color: var(--led-on);
+}
+
+.stage-seg.active .seg-num {
+  color: var(--led-on);
+}
+
+.seg-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dim);
+  line-height: 1;
+}
+
+.seg-pin {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--dim);
+  margin-top: 1px;
+}
+
+.stage-seg.active .seg-pin {
+  color: var(--muted);
 }
 
 .finger-chips-grid {

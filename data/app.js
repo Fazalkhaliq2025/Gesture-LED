@@ -277,6 +277,15 @@
       ['OFF', 'OFF', 'OFF', 'OFF', 'OFF'],
       ['0%', '0%', '0%', '0%', '0%']
     );
+    const statusEl = document.getElementById('counterStatusText');
+    if (statusEl) {
+      statusEl.textContent = 'All Outputs Inactive';
+      statusEl.style.color = 'var(--dim)';
+    }
+    for (let i = 0; i < 5; i++) {
+      const seg = document.getElementById(`seg${i}`);
+      if (seg) seg.classList.remove('active');
+    }
   }
 
   function setVirtualLedsState(allOn) {
@@ -321,6 +330,20 @@
     const duties = states.map(s => s ? 'ON (100%)' : 'OFF');
     const fills = states.map(s => s ? '100%' : '0%');
     updateChannelMatrix(states, duties, fills);
+
+    const statusEl = document.getElementById('counterStatusText');
+    if (statusEl) {
+      statusEl.textContent = count === 0
+        ? 'All Outputs Inactive'
+        : count === 5
+        ? 'All 5 Outputs Active'
+        : `${count} of 5 Outputs Active`;
+      statusEl.style.color = count > 0 ? 'var(--led-on)' : 'var(--dim)';
+    }
+    for (let i = 0; i < 5; i++) {
+      const seg = document.getElementById(`seg${i}`);
+      if (seg) seg.classList.toggle('active', i < count);
+    }
   }
 
   // ============================================================================

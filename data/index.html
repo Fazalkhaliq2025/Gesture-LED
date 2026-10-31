@@ -276,7 +276,22 @@
           <div class="mode-pane" id="paneMode3">
             <div class="telemetry-row">
               <span class="telemetry-label">Fingers up</span>
-              <div class="counter-box" id="fingerCountDisplay">0</div>
+              <div class="counter-stage-wrap">
+                <div class="counter-val-group">
+                  <div class="counter-box" id="fingerCountDisplay">0</div>
+                  <span class="counter-max">/ 5</span>
+                </div>
+                <div class="counter-meter-card">
+                  <div class="meter-status" id="counterStatusText">All Outputs Inactive</div>
+                  <div class="counter-stages">
+                    <div class="stage-seg" id="seg0"><span class="seg-num">1</span><span class="seg-pin">GPIO 13</span></div>
+                    <div class="stage-seg" id="seg1"><span class="seg-num">2</span><span class="seg-pin">GPIO 14</span></div>
+                    <div class="stage-seg" id="seg2"><span class="seg-num">3</span><span class="seg-pin">GPIO 27</span></div>
+                    <div class="stage-seg" id="seg3"><span class="seg-num">4</span><span class="seg-pin">GPIO 26</span></div>
+                    <div class="stage-seg" id="seg4"><span class="seg-num">5</span><span class="seg-pin">GPIO 25</span></div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="finger-chips-grid">
               <div class="finger-chip-unit" id="chipThumb"><span class="chip-name">Thumb</span><span
