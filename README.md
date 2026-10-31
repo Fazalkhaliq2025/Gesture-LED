@@ -7,6 +7,7 @@
 [![ESP32 Arduino Core 3.x](https://img.shields.io/badge/ESP32_Core-3.x-red?style=for-the-badge&logo=espressif)](https://github.com/espressif/arduino-esp32)
 [![MediaPipe Hands](https://img.shields.io/badge/MediaPipe-Hands_WASM-blue?style=for-the-badge&logo=google)](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)
 [![Web Serial API](https://img.shields.io/badge/Web_Serial-115200_Baud-8b5cf6?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API)
+[![Wokwi Simulator](https://img.shields.io/badge/Wokwi-Simulation-1976D2?style=for-the-badge)](https://wokwi.com/projects/479407290437929985)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-22c55e?style=for-the-badge&logo=github)](https://skr-electronics-lab.github.io/GestureLED/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-orange?style=for-the-badge)](LICENSE)
 
