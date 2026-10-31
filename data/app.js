@@ -64,6 +64,28 @@
     document.getElementById('led4')
   ];
 
+  // Schematic Circuit Diagram LEDs (0 to 4)
+  const diagLeds = [
+    document.getElementById('diagLed0'),
+    document.getElementById('diagLed1'),
+    document.getElementById('diagLed2'),
+    document.getElementById('diagLed3'),
+    document.getElementById('diagLed4')
+  ];
+
+  // ============================================================================
+  // PURGE WI-FI PROVISIONING FROM FLASHER MODAL
+  // ============================================================================
+  const flasherModalObserver = new MutationObserver(() => {
+    const wifiBtn = document.getElementById('__efb-succ-open-wifi');
+    if (wifiBtn) wifiBtn.remove();
+    const wifiCard = document.querySelector('.__efb-wifi-card');
+    if (wifiCard) wifiCard.remove();
+    const wifiBtns = document.querySelectorAll('.__efb-succ-btn-wifi');
+    wifiBtns.forEach(btn => btn.remove());
+  });
+  flasherModalObserver.observe(document.body, { childList: true, subtree: true });
+
   // ============================================================================
   // APPLICATION STATE
   // ============================================================================
@@ -244,12 +266,24 @@
       led.classList.remove('active');
       led.style.opacity = '1';
     });
+    diagLeds.forEach(led => {
+      if (led) {
+        led.classList.remove('active');
+        led.style.opacity = '1';
+      }
+    });
   }
 
   function setVirtualLedsState(allOn) {
     virtualLeds.forEach(led => {
       led.classList.toggle('active', allOn);
       led.style.opacity = '1';
+    });
+    diagLeds.forEach(led => {
+      if (led) {
+        led.classList.toggle('active', allOn);
+        led.style.opacity = '1';
+      }
     });
   }
 
@@ -264,12 +298,29 @@
         led.style.opacity = '1';
       }
     });
+    diagLeds.forEach(led => {
+      if (led) {
+        if (brightness > 0) {
+          led.classList.add('active');
+          led.style.opacity = (0.2 + 0.8 * normalized).toFixed(2);
+        } else {
+          led.classList.remove('active');
+          led.style.opacity = '1';
+        }
+      }
+    });
   }
 
   function setVirtualLedsCount(count) {
     virtualLeds.forEach((led, i) => {
       led.classList.toggle('active', i < count);
       led.style.opacity = '1';
+    });
+    diagLeds.forEach((led, i) => {
+      if (led) {
+        led.classList.toggle('active', i < count);
+        led.style.opacity = '1';
+      }
     });
   }
 

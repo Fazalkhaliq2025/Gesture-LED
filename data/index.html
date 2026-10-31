@@ -11,6 +11,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
+  <style>
+    /* Suppress Wi-Fi provisioning UI in browser flasher modal */
+    .__efb-succ-btn-wifi,
+    #__efb-succ-open-wifi,
+    .__efb-wifi-card {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  </style>
+
   <!-- ESP Flasher Button by SKR Electronics Lab -->
   <script type="module" src="https://skr-electronics-lab.github.io/esp-flasher-button/esp-flasher-button.js"></script>
 
@@ -38,7 +49,7 @@
       </div>
 
       <div class="header-actions">
-        <esp-flasher-button manifest="manifest.json" wifi="false" no-wifi>
+        <esp-flasher-button manifest="manifest.json" wifi="false" no-wifi improv="false">
           <button slot="activate" class="btn-flasher-custom" title="Flash GestureLED Firmware to ESP32">
             <svg class="svg-icon" viewBox="0 0 24 24">
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
@@ -228,34 +239,131 @@
             </div>
           </div>
 
-          <!-- Mode 4: Wokwi Simulation & Circuit Connections -->
+          <!-- Mode 4: Circuit Connections & Wokwi Simulation -->
           <div class="mode-pane" id="paneMode4">
             <div class="circuit-card">
-              <div class="wokwi-iframe-card">
-                <div class="wokwi-card-header">
+
+              <!-- Interactive 5-LED ESP32 Wiring Diagram -->
+              <div class="circuit-diagram-card">
+                <div class="circuit-diagram-header">
                   <div class="wokwi-header-title">
                     <svg class="svg-icon" viewBox="0 0 24 24">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      <rect x="2" y="2" width="20" height="20" rx="4"/>
+                      <path d="M7 12h10M12 7v10"/>
                     </svg>
-                    <span>Wokwi Embedded Simulation</span>
+                    <span>ESP32 5-LED Direct Circuit Diagram</span>
                   </div>
-                  <a href="https://wokwi.com/projects/348606636041962067" target="_blank" rel="noopener" class="wokwi-ext-link" title="Open in Wokwi">
-                    <svg class="svg-icon" viewBox="0 0 24 24">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                  </a>
+                  <span class="circuit-diagram-badge">Direct Connection · No Resistors</span>
                 </div>
-                <iframe 
-                  src="https://wokwi.com/projects/348606636041962067?embed=1" 
-                  class="wokwi-embed-frame" 
-                  loading="lazy" 
-                  allow="autoplay" 
-                  title="Wokwi ESP32 Circuit Simulator">
-                </iframe>
+                <div class="circuit-svg-wrap">
+                  <svg viewBox="0 0 480 270" class="circuit-svg" preserveAspectRatio="xMidYMid meet">
+                    <!-- Background Grid -->
+                    <defs>
+                      <pattern id="diagGrid" width="16" height="16" patternUnits="userSpaceOnUse">
+                        <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#1C212D" stroke-width="0.6"/>
+                      </pattern>
+                    </defs>
+                    <rect width="480" height="270" fill="url(#diagGrid)"/>
+
+                    <!-- ESP32 DevKit Board Body -->
+                    <rect x="20" y="20" width="135" height="230" rx="6" fill="#121418" stroke="#2A2D33" stroke-width="1.5"/>
+                    <rect x="30" y="55" width="115" height="85" rx="3" fill="#1A1C22" stroke="#333842" stroke-width="1"/>
+                    <text x="87" y="95" fill="#8E97A6" font-size="10" font-weight="600" text-anchor="middle" letter-spacing="1">ESP-WROOM-32</text>
+                    <text x="87" y="112" fill="#5A6372" font-size="9" text-anchor="middle">ESPRESSIF</text>
+
+                    <!-- USB Connector -->
+                    <rect x="65" y="240" width="45" height="14" rx="2" fill="#252A34" stroke="#38404E" stroke-width="1"/>
+                    <text x="87" y="250" fill="#758296" font-size="8" text-anchor="middle">USB UART</text>
+
+                    <!-- Pin Header Pads Right Side -->
+                    <!-- GPIO 25 -->
+                    <circle cx="150" cy="50" r="3.5" fill="#1E232D" stroke="#2BFF00" stroke-width="1.2"/>
+                    <text x="140" y="53" fill="#A0AEC0" font-size="9" text-anchor="end">25</text>
+
+                    <!-- GPIO 26 -->
+                    <circle cx="150" cy="85" r="3.5" fill="#1E232D" stroke="#2BFF00" stroke-width="1.2"/>
+                    <text x="140" y="88" fill="#A0AEC0" font-size="9" text-anchor="end">26</text>
+
+                    <!-- GPIO 27 -->
+                    <circle cx="150" cy="120" r="3.5" fill="#1E232D" stroke="#2BFF00" stroke-width="1.2"/>
+                    <text x="140" y="123" fill="#A0AEC0" font-size="9" text-anchor="end">27</text>
+
+                    <!-- GPIO 14 -->
+                    <circle cx="150" cy="155" r="3.5" fill="#1E232D" stroke="#2BFF00" stroke-width="1.2"/>
+                    <text x="140" y="158" fill="#A0AEC0" font-size="9" text-anchor="end">14</text>
+
+                    <!-- GPIO 13 -->
+                    <circle cx="150" cy="190" r="3.5" fill="#1E232D" stroke="#2BFF00" stroke-width="1.2"/>
+                    <text x="140" y="193" fill="#A0AEC0" font-size="9" text-anchor="end">13</text>
+
+                    <!-- GND Pin -->
+                    <circle cx="150" cy="225" r="3.5" fill="#1E232D" stroke="#64748B" stroke-width="1.2"/>
+                    <text x="140" y="228" fill="#718096" font-size="9" text-anchor="end">GND</text>
+
+                    <!-- Wiring Traces (GPIO -> LED Anodes) in #2BFF00 -->
+                    <!-- Wire GPIO 13 -> LED 1 -->
+                    <path d="M150 190 L205 190 L205 40 L310 40" fill="none" stroke="#2BFF00" stroke-width="1.8" stroke-linecap="round"/>
+                    <!-- Wire GPIO 14 -> LED 2 -->
+                    <path d="M150 155 L220 155 L220 80 L310 80" fill="none" stroke="#2BFF00" stroke-width="1.8" stroke-linecap="round"/>
+                    <!-- Wire GPIO 27 -> LED 3 -->
+                    <path d="M150 120 L310 120" fill="none" stroke="#2BFF00" stroke-width="1.8" stroke-linecap="round"/>
+                    <!-- Wire GPIO 26 -> LED 4 -->
+                    <path d="M150 85 L220 85 L220 160 L310 160" fill="none" stroke="#2BFF00" stroke-width="1.8" stroke-linecap="round"/>
+                    <!-- Wire GPIO 25 -> LED 5 -->
+                    <path d="M150 50 L205 50 L205 200 L310 200" fill="none" stroke="#2BFF00" stroke-width="1.8" stroke-linecap="round"/>
+
+                    <!-- Shared GND Return Rail Trace in #64748B -->
+                    <path d="M355 40 L375 40 L375 235 L150 235" fill="none" stroke="#64748B" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M355 80 L375 80" fill="none" stroke="#64748B" stroke-width="1.6"/>
+                    <path d="M355 120 L375 120" fill="none" stroke="#64748B" stroke-width="1.6"/>
+                    <path d="M355 160 L375 160" fill="none" stroke="#64748B" stroke-width="1.6"/>
+                    <path d="M355 200 L375 200" fill="none" stroke="#64748B" stroke-width="1.6"/>
+
+                    <!-- 5 Discrete LED Units (Mirroring real-time state) -->
+                    <!-- LED 1 -->
+                    <g transform="translate(325, 40)">
+                      <circle id="diagLed0" cx="12" cy="0" r="11" class="diag-led-node" />
+                      <line x1="-15" y1="0" x2="1" y2="0" stroke="#2BFF00" stroke-width="1.6"/>
+                      <line x1="23" y1="0" x2="30" y2="0" stroke="#64748B" stroke-width="1.6"/>
+                      <text x="58" y="4" class="diag-led-lbl">LED 1 (GPIO 13)</text>
+                    </g>
+
+                    <!-- LED 2 -->
+                    <g transform="translate(325, 80)">
+                      <circle id="diagLed1" cx="12" cy="0" r="11" class="diag-led-node" />
+                      <line x1="-15" y1="0" x2="1" y2="0" stroke="#2BFF00" stroke-width="1.6"/>
+                      <line x1="23" y1="0" x2="30" y2="0" stroke="#64748B" stroke-width="1.6"/>
+                      <text x="58" y="4" class="diag-led-lbl">LED 2 (GPIO 14)</text>
+                    </g>
+
+                    <!-- LED 3 -->
+                    <g transform="translate(325, 120)">
+                      <circle id="diagLed2" cx="12" cy="0" r="11" class="diag-led-node" />
+                      <line x1="-15" y1="0" x2="1" y2="0" stroke="#2BFF00" stroke-width="1.6"/>
+                      <line x1="23" y1="0" x2="30" y2="0" stroke="#64748B" stroke-width="1.6"/>
+                      <text x="58" y="4" class="diag-led-lbl">LED 3 (GPIO 27)</text>
+                    </g>
+
+                    <!-- LED 4 -->
+                    <g transform="translate(325, 160)">
+                      <circle id="diagLed3" cx="12" cy="0" r="11" class="diag-led-node" />
+                      <line x1="-15" y1="0" x2="1" y2="0" stroke="#2BFF00" stroke-width="1.6"/>
+                      <line x1="23" y1="0" x2="30" y2="0" stroke="#64748B" stroke-width="1.6"/>
+                      <text x="58" y="4" class="diag-led-lbl">LED 4 (GPIO 26)</text>
+                    </g>
+
+                    <!-- LED 5 -->
+                    <g transform="translate(325, 200)">
+                      <circle id="diagLed4" cx="12" cy="0" r="11" class="diag-led-node" />
+                      <line x1="-15" y1="0" x2="1" y2="0" stroke="#2BFF00" stroke-width="1.6"/>
+                      <line x1="23" y1="0" x2="30" y2="0" stroke="#64748B" stroke-width="1.6"/>
+                      <text x="58" y="4" class="diag-led-lbl">LED 5 (GPIO 25)</text>
+                    </g>
+                  </svg>
+                </div>
               </div>
 
+              <!-- Hardware Connection Pinout Table -->
               <div class="telemetry-row">
                 <span class="telemetry-label">Hardware Connection Pinout</span>
               </div>
@@ -265,7 +373,7 @@
                     <tr>
                       <th>LED Channel</th>
                       <th>ESP32 GPIO</th>
-                      <th>Resistor</th>
+                      <th>Connection Type</th>
                       <th>Return Rail</th>
                     </tr>
                   </thead>
@@ -273,36 +381,37 @@
                     <tr>
                       <td>LED 1</td>
                       <td><span class="pin-badge">GPIO 13</span></td>
-                      <td>220Ω</td>
-                      <td>GND</td>
+                      <td>Direct to Anode</td>
+                      <td>Common GND</td>
                     </tr>
                     <tr>
                       <td>LED 2</td>
                       <td><span class="pin-badge">GPIO 14</span></td>
-                      <td>220Ω</td>
-                      <td>GND</td>
+                      <td>Direct to Anode</td>
+                      <td>Common GND</td>
                     </tr>
                     <tr>
                       <td>LED 3</td>
                       <td><span class="pin-badge">GPIO 27</span></td>
-                      <td>220Ω</td>
-                      <td>GND</td>
+                      <td>Direct to Anode</td>
+                      <td>Common GND</td>
                     </tr>
                     <tr>
                       <td>LED 4</td>
                       <td><span class="pin-badge">GPIO 26</span></td>
-                      <td>220Ω</td>
-                      <td>GND</td>
+                      <td>Direct to Anode</td>
+                      <td>Common GND</td>
                     </tr>
                     <tr>
                       <td>LED 5</td>
                       <td><span class="pin-badge">GPIO 25</span></td>
-                      <td>220Ω</td>
-                      <td>GND</td>
+                      <td>Direct to Anode</td>
+                      <td>Common GND</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+              <p class="instruction-box">Direct Connection: Standard 3mm/5mm LEDs connect straight from GPIO pins to GND without resistors. ESP32 internal 3.3V GPIO current limits safely protect the LEDs.</p>
             </div>
           </div>
         </div>

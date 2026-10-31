@@ -82,23 +82,23 @@ By leveraging high-speed USB-UART (115200 baud) instead of local Wi-Fi, GestureL
 
 ### Bill of Materials
 - **1x** ESP32 WROOM-32 DevKit (standard 30-pin or 38-pin module)
-- **5x** LEDs (5mm or 3mm, standard forward voltage)
-- **5x** Current-limiting resistors (220Ω to 330Ω, 1/4W)
+- **5x** LEDs (5mm or 3mm, standard green/red forward voltage)
+- **Direct Connection:** No external resistors required for standard 3.3V GPIO driving (220Ω optional for high-efficiency LEDs)
 - **1x** Solderless breadboard and jumper wires
 - **1x** Micro-USB data cable (ensure data lines are connected, not charge-only)
 
 ### Pinout Mapping
 All 5 output channels utilize dedicated general-purpose GPIOs, strictly avoiding ESP32 strapping pins (`GPIO 0, 2, 4, 5, 12, 15`):
 
-| LED Index | ESP32 GPIO | Resistor | Functionality |
+| LED Index | ESP32 GPIO | Connection | Functionality |
 |:---:|:---:|:---:|:---|
-| **LED 1** | **GPIO 13** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
-| **LED 2** | **GPIO 14** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
-| **LED 3** | **GPIO 27** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
-| **LED 4** | **GPIO 26** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
-| **LED 5** | **GPIO 25** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 1** | **GPIO 13** | Direct to Anode (Return to GND) | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 2** | **GPIO 14** | Direct to Anode (Return to GND) | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 3** | **GPIO 27** | Direct to Anode (Return to GND) | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 4** | **GPIO 26** | Direct to Anode (Return to GND) | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 5** | **GPIO 25** | Direct to Anode (Return to GND) | Digital ON/OFF & 5 kHz LEDC PWM |
 
-> **Wiring Schematic:** Connect each GPIO pin to the Anode (longer leg) of an LED. Connect each Cathode (shorter leg) through a current-limiting resistor to the common `GND` rail on the ESP32.
+> **Wiring Schematic:** Connect each GPIO pin directly to the Anode (longer leg) of an LED. Connect each Cathode (shorter leg) straight to the common `GND` rail on the ESP32. ESP32 3.3V internal GPIO source impedance safely limits current (~12–18mA per pin).
 
 ---
 

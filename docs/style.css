@@ -699,7 +699,7 @@ body {
   overflow-y: auto;
 }
 
-.wokwi-iframe-card {
+.circuit-diagram-card {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
@@ -709,7 +709,7 @@ body {
   flex-shrink: 0;
 }
 
-.wokwi-card-header {
+.circuit-diagram-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -718,38 +718,45 @@ body {
   border-bottom: 1px solid var(--line);
 }
 
-.wokwi-header-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
+.circuit-diagram-badge {
+  font-size: 10px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--ok);
+  background: rgba(43, 255, 0, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(43, 255, 0, 0.2);
 }
 
-.wokwi-header-title .svg-icon {
-  color: var(--led-on);
-  width: 14px;
-  height: 14px;
-}
-
-.wokwi-ext-link {
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  transition: color .12s;
-}
-
-.wokwi-ext-link:hover {
-  color: var(--text);
-}
-
-.wokwi-embed-frame {
+.circuit-svg-wrap {
   width: 100%;
-  height: 260px;
-  border: 0;
+  background: #0d0f12;
+  border-bottom: 1px solid var(--line);
+}
+
+.circuit-svg {
+  width: 100%;
+  height: auto;
   display: block;
-  background: #1e1e1e;
+}
+
+.diag-led-node {
+  fill: var(--led-off);
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  transition: fill 60ms ease, opacity 60ms ease;
+}
+
+.diag-led-node.active {
+  fill: var(--led-on);
+  stroke: var(--led-on-line);
+}
+
+.diag-led-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--text);
+  font-family: var(--sans);
 }
 
 .circuit-table-wrap {
@@ -871,4 +878,34 @@ body {
   * {
     transition: none !important
   }
+}
+
+/* ==============================================================================
+   ESP FLASHER MODAL WI-FI REMOVAL
+   Strictly suppress and hide Wi-Fi setup & improv provisioning UI
+   ============================================================================== */
+.__efb-succ-btn-wifi,
+#__efb-succ-open-wifi,
+.__efb-wifi-card,
+.__efb-wifi-header,
+.__efb-wifi-form,
+.__efb-wifi-btns,
+.__efb-wifi-status {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.__efb-succ-actions {
+  display: flex !important;
+}
+
+.__efb-succ-btn-serial {
+  flex: 1 1 100% !important;
+  width: 100% !important;
 }
