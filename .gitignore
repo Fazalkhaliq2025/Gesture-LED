@@ -1,0 +1,25 @@
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+.clang_complete
+.gcc-flags.json
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS / Environment
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Python artifacts
+__pycache__/
+*.pyc
+
+# Allow firmware binaries required for the browser web flasher
+!docs/firmware/*.bin
