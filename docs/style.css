@@ -1,747 +1,675 @@
-/* ==============================================================================
-   GestureLED Design System — Pure Precision Tech Dark Theme
-   Specifications:
-   - Base Palette: Midnight Obsidian (#090D16), Surface (#111827), Panel (#161F30)
-   - Borders: 1px Solid Structural Slate (#243049, #1E293B)
-   - Interactive Accent: High-Energy Cobalt (#2563EB / #3B82F6)
-   - Success Accent: Clean Emerald (#10B981)
-   - Text Hierarchy: Primary (#F8FAFC), Muted (#94A3B8), Subtle (#64748B)
-   - ABSOLUTELY ZERO GRADIENTS, ZERO GLOW EFFECTS, ZERO EMOJIS
-   ============================================================================== */
-
+/* GestureLED – dark web-app shell. Fills the viewport, no page scroll on desktop.
+   Every class/id used by app.js is kept. */
 :root {
-  --bg-app: #080C14;
-  --bg-card: #0F1626;
-  --bg-card-header: #131B2E;
-  --bg-surface: #172138;
-  --bg-surface-hover: #1E2B48;
-  --bg-subtle: #1C263D;
-
-  --border-subtle: #1C2840;
-  --border-default: #253352;
-  --border-active: #3B82F6;
-
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #8292A9;
-  --text-dim: #4D5E7A;
-
-  --color-primary: #2563EB;
-  --color-primary-hover: #1D4ED8;
-  --color-primary-active: #3B82F6;
-  --color-primary-soft: rgba(37, 99, 235, 0.12);
-
-  --color-success: #10B981;
-  --color-success-soft: rgba(16, 185, 129, 0.12);
-  --color-danger: #EF4444;
-  --color-danger-soft: rgba(239, 68, 68, 0.12);
-
-  --led-off: #162035;
-  --led-off-border: #253352;
-  --led-on: #3B82F6;
-  --led-on-border: #60A5FA;
-
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-  --radius-xs: 3px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-
-  --transition-fast: 120ms ease;
+  --bg: #0E0F11;
+  --surface: #16171A;
+  --raised: #202226;
+  --line: #2A2D33;
+  --line-strong: #3A3E46;
+  --text: #ECEDEF;
+  --muted: #9AA0AA;
+  --dim: #7E8591;
+  --led-on: #FFB020;
+  --led-on-line: #FFC857;
+  --led-off: #26282D;
+  --ok: #3DD68C;
+  --bad: #F2555A;
+  --focus: #8FA8FF;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Base Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
+  padding: 0
 }
 
-html, body {
-  background-color: var(--bg-app);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  line-height: 1.5;
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden
 }
 
-/* Main Layout Shell */
-.app-container {
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 1.25rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px
 }
 
-/* Professional SVG Icons */
 .svg-icon {
   width: 16px;
   height: 16px;
-  stroke-width: 2;
   stroke: currentColor;
   fill: none;
+  stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  flex-shrink: 0;
-  display: inline-block;
-  vertical-align: middle;
+  flex-shrink: 0
 }
 
 .svg-icon-lg {
-  width: 32px;
-  height: 32px;
-  stroke-width: 1.75;
+  width: 30px;
+  height: 30px
 }
 
-/* Header Architecture */
+.app-container {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column
+}
+
+/* Top bar */
 .app-header {
+  height: 60px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.85rem 1rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  flex-wrap: wrap;
-  gap: 1rem;
+  gap: 16px;
+  padding: 0 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line)
 }
 
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 12px;
+  min-width: 0
 }
 
 .brand-logo-unit {
-  width: 36px;
-  height: 36px;
-  background-color: var(--color-primary);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #FFFFFF;
-  font-family: var(--font-mono);
-  font-weight: 800;
-  font-size: 0.95rem;
-  letter-spacing: -0.05em;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--led-on);
+  color: #1A1200;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -.02em
 }
 
 .brand-meta {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0
 }
 
 .brand-title-row {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: baseline;
+  gap: 10px
 }
 
 .brand-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.01em
 }
 
 .brand-badge {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  color: var(--text-muted);
-  padding: 0.1rem 0.4rem;
-  border-radius: var(--radius-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: 12px;
+  color: var(--dim)
 }
 
 .brand-sub {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
 }
 
-/* Header Controls & Actions */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
+  gap: 10px
 }
 
-/* Connect Serial Button */
 .btn-serial {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.85rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  background: var(--text);
+  border: 0;
+  border-radius: 8px;
+  color: #111214;
+  font: 600 13px var(--sans);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background .12s
 }
 
 .btn-serial:hover {
-  background-color: var(--bg-surface-hover);
-  border-color: var(--border-active);
+  background: #fff
 }
 
 .btn-serial.connected {
-  background-color: var(--color-primary-soft);
-  border-color: var(--color-primary-active);
-  color: var(--color-primary-active);
+  background: transparent;
+  color: var(--ok);
+  box-shadow: inset 0 0 0 1px var(--ok)
 }
 
-/* Status Bar Pill */
 .status-bar {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.75rem;
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px
 }
 
 .status-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background-color: var(--color-danger);
+  background: var(--bad)
 }
 
 .status-dot.connected {
-  background-color: var(--color-success);
+  background: var(--ok)
 }
 
 .status-text {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500
 }
 
 .status-baud {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  border-left: 1px solid var(--border-default);
-  padding-left: 0.5rem;
+  font-size: 12px;
+  color: var(--dim);
+  padding-left: 8px;
+  border-left: 1px solid var(--line)
 }
 
-/* Segmented Mode Navigation */
+/* App body */
+.workspace-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px
+}
+
+.card-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  min-height: 0
+}
+
+/* Camera */
+.camera-panel {
+  position: relative;
+  overflow: hidden;
+  display: flex
+}
+
+.viewport-frame {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #08090A;
+  overflow: hidden
+}
+
+#webcamVideo {
+  display: none
+}
+
+#outputCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1)
+}
+
+.panel-tag,
+.meta-fps {
+  position: absolute;
+  z-index: 5;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(14, 15, 17, .72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, .1);
+  padding: 5px 10px;
+  border-radius: 999px
+}
+
+.panel-tag {
+  top: 14px;
+  left: 14px
+}
+
+.meta-fps {
+  bottom: 14px;
+  left: 14px;
+  color: var(--muted)
+}
+
+.viewport-fallback {
+  position: absolute;
+  inset: 0;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  z-index: 10
+}
+
+.viewport-fallback.hidden {
+  display: none
+}
+
+.fallback-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--raised);
+  display: grid;
+  place-items: center;
+  color: var(--muted)
+}
+
+.fallback-heading {
+  font-size: 17px;
+  font-weight: 600
+}
+
+.fallback-text {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 360px
+}
+
+.btn-solid-primary {
+  height: 38px;
+  padding: 0 18px;
+  background: var(--text);
+  color: #111214;
+  border: 0;
+  border-radius: 8px;
+  font: 600 13px var(--sans);
+  cursor: pointer
+}
+
+.btn-solid-primary:hover {
+  background: #fff
+}
+
+/* Side column */
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0
+}
+
 .mode-tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: 0.35rem;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  flex-shrink: 0
 }
 
 .tab-btn {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.65rem 1rem;
-  background-color: transparent;
+  gap: 6px;
+  padding: 10px 4px;
+  background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 600;
+  border-radius: 9px;
+  color: var(--muted);
+  font: 500 12px var(--sans);
   cursor: pointer;
-  transition: all var(--transition-fast);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  transition: background .12s, color .12s
 }
 
 .tab-btn:hover {
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
+  color: var(--text);
+  background: var(--raised)
 }
 
 .tab-btn.active {
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary-active);
-  border-color: var(--color-primary-active);
+  background: var(--raised);
+  color: var(--text);
+  border-color: var(--line-strong)
+}
+
+.tab-btn.active .svg-icon {
+  color: var(--led-on)
 }
 
 .tab-index {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  opacity: 0.75;
-}
-
-/* Workspace Grid */
-.workspace-grid {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: 1rem;
-  align-items: start;
-}
-
-@media (max-width: 960px) {
-  .workspace-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Panel Containers */
-.card-panel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background-color: var(--bg-card-header);
-  border-bottom: 1px solid var(--border-default);
-}
-
-.panel-title-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.panel-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-primary);
-}
-
-.panel-tag {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  padding: 0.15rem 0.45rem;
-  border-radius: var(--radius-xs);
-}
-
-/* Viewport Area */
-.viewport-frame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background-color: #04060A;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#webcamVideo {
-  display: none;
-}
-
-#outputCanvas {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scaleX(-1); /* Natural webcam mirror reflection */
-}
-
-/* Viewport Fallback State */
-.viewport-fallback {
-  position: absolute;
-  inset: 0;
-  background-color: var(--bg-card);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
-  gap: 0.85rem;
-  z-index: 10;
-}
-
-.viewport-fallback.hidden {
-  display: none;
-}
-
-.fallback-icon-wrap {
-  width: 48px;
-  height: 48px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-}
-
-.fallback-heading {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.fallback-text {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  max-width: 340px;
-  line-height: 1.45;
-}
-
-.btn-solid-primary {
-  background-color: var(--color-primary);
-  color: #FFFFFF;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 0.5rem 1.15rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color var(--transition-fast);
-}
-
-.btn-solid-primary:hover {
-  background-color: var(--color-primary-hover);
-}
-
-.panel-footer-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.65rem 1rem;
-  background-color: var(--bg-card-header);
-  border-top: 1px solid var(--border-default);
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-
-.meta-fps {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-/* Hardware Telemetry Card */
-.panel-body {
-  padding: 1.15rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
+  display: none
 }
 
 .hardware-strip-box {
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 0.85rem 1rem;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 14px;
+  flex-shrink: 0
 }
 
 .strip-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline
 }
 
 .strip-title {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600
 }
 
 .strip-pins {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-dim);
+  font-size: 12px;
+  color: var(--dim)
 }
 
 .led-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
+  gap: 8px
 }
 
 .led-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 8px
 }
 
 .led-node {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-xs);
-  background-color: var(--led-off);
-  border: 1px solid var(--led-off-border);
-  transition: background-color 60ms ease, opacity 60ms ease;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--led-off);
+  border: 1px solid var(--line-strong);
+  transition: background-color 60ms ease, opacity 60ms ease
 }
 
 .led-node.active {
-  background-color: var(--led-on);
-  border-color: var(--led-on-border);
+  background: var(--led-on);
+  border-color: var(--led-on-line)
 }
 
 .led-id {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: var(--dim)
 }
 
-/* Mode Content Panes */
+.panel-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  display: flex;
+  flex-direction: column
+}
+
 .mode-pane {
   display: none;
+  flex: 1;
+  min-height: 0;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px
 }
 
 .mode-pane.active {
-  display: flex;
+  display: flex
 }
 
 .instruction-box {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  padding: 0.65rem 0.85rem;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  line-height: 1.45;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55
 }
 
 .telemetry-row {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 6px
 }
 
 .telemetry-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--dim)
 }
 
-/* Mode 1 Large Pill */
-.state-pill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem 1rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
+/* Mode 1 (JS swaps class to .metric-pill, so both are styled).
+   JS writes uppercase text; CSS turns it into sentence case. */
+.state-pill,
+.metric-pill {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--muted);
+  text-transform: lowercase
 }
 
-.state-pill.open {
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary-active);
-  border-color: var(--color-primary-active);
+.state-pill::first-letter,
+.metric-pill::first-letter {
+  text-transform: uppercase
 }
 
-.state-pill.closed {
-  background-color: var(--bg-surface);
-  color: var(--text-secondary);
+.state-pill.open,
+.metric-pill.open {
+  color: var(--led-on)
 }
 
-/* Mode 2 Dimmer Bar */
+.state-pill.closed,
+.metric-pill.closed {
+  color: var(--text)
+}
+
+/* Mode 2 */
 .dimmer-metric-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline
 }
 
 .dimmer-metric-value {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 600
 }
 
 .flat-bar-rail {
-  width: 100%;
-  height: 16px;
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xs);
-  overflow: hidden;
+  height: 10px;
+  background: var(--led-off);
+  border-radius: 5px;
+  overflow: hidden
 }
 
 .flat-bar-fill {
   height: 100%;
-  background-color: var(--color-primary);
-  width: 0%;
-  transition: width 40ms linear;
+  width: 0;
+  background: var(--led-on);
+  border-radius: 5px;
+  transition: width 40ms linear
 }
 
 .telemetry-sub {
   display: flex;
   justify-content: space-between;
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: var(--muted)
 }
 
 .sub-mono {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text);
+  font-weight: 500
 }
 
-/* Mode 3 Counter */
+/* Mode 3 */
 .counter-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 72px;
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 2.6rem;
-  font-weight: 800;
-  color: var(--color-primary-active);
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.03em
 }
 
 .finger-chips-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.35rem;
+  gap: 6px
 }
 
 .finger-chip-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.4rem 0.2rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xs);
-  gap: 0.15rem;
+  gap: 2px;
+  padding: 8px 2px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 8px
 }
 
 .finger-chip-unit.extended {
-  background-color: var(--color-primary-soft);
-  border-color: var(--color-primary-active);
+  border-color: var(--led-on);
+  background: rgba(255, 176, 32, .12)
 }
 
 .chip-name {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--muted)
 }
 
-.chip-val {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text-dim);
+.chip-val,
+.finger-state {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dim)
 }
 
-.finger-chip-unit.extended .chip-val {
-  color: var(--color-primary-active);
+.finger-chip-unit.extended .finger-state {
+  color: var(--led-on)
 }
 
-/* Command Outbox */
+/* Last command row (plain, not a console) */
 .command-outbox {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.45rem 0.75rem;
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xs);
+  padding-top: 14px;
+  border-top: 1px solid var(--line)
 }
 
 .outbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.7rem;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--dim)
+}
+
+.outbox-label .svg-icon {
+  display: none
 }
 
 .outbox-code {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font: 600 12px var(--sans);
+  color: var(--text);
+  background: var(--raised);
+  border: 1px solid var(--line);
+  padding: 4px 10px;
+  border-radius: 6px
 }
 
-/* App Footer */
 .app-footer {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--dim);
+  padding: 0 4px
 }
 
 .footer-link {
-  color: var(--color-primary-active);
-  text-decoration: none;
-}
-
-.footer-link:hover {
+  color: var(--muted);
   text-decoration: underline;
+  text-underline-offset: 2px
 }
 
-@media (max-width: 580px) {
-  .mode-tabs {
+/* Small screens: let the page scroll instead of cramming */
+@media(max-width:900px), (max-height:640px) {
+
+  html,
+  body {
+    overflow: auto
+  }
+
+  .app-container {
+    height: auto;
+    min-height: 100dvh
+  }
+
+  .workspace-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto
   }
+
+  .camera-panel {
+    aspect-ratio: 4/3
+  }
+
+  .brand-sub {
+    display: none
+  }
+
   .app-header {
-    flex-direction: column;
-    align-items: flex-start;
+    height: auto;
+    padding: 12px 16px;
+    flex-wrap: wrap
   }
+
   .header-actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: wrap
   }
-  .status-bar {
-    width: 100%;
-    justify-content: space-between;
+}
+
+@media(prefers-reduced-motion:reduce) {
+  * {
+    transition: none !important
   }
 }

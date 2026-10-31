@@ -23,3 +23,4 @@ __pycache__/
 
 # Allow firmware binaries required for the browser web flasher
 !docs/firmware/*.bin
+

@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GestureLED — ESP32 Hardware Vision Controller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
   <!-- ESP Flasher Button by SKR Electronics Lab -->
@@ -14,42 +18,33 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
   <div class="app-container">
-    
-    <!-- Top System Bar -->
+
     <header class="app-header">
       <div class="brand-section">
-        <div class="brand-logo-unit">GL</div>
+        <div class="brand-logo-unit" aria-hidden="true">GL</div>
         <div class="brand-meta">
           <div class="brand-title-row">
             <h1 class="brand-title">GestureLED</h1>
-            <span class="brand-badge">ESP32 Core 3.x</span>
-            <span class="brand-badge">v1.0.0</span>
+            <span class="brand-badge">ESP32 · v1.0.0</span>
           </div>
-          <span class="brand-sub">Hardware Gesture Vision Controller • SKR Electronics Lab</span>
+          <span class="brand-sub">Control ESP32 LEDs with your hand</span>
         </div>
       </div>
 
-      <!-- Header Tools & Connection Actions -->
       <div class="header-actions">
-        <!-- Browser Firmware Flasher Button -->
-        <esp-flasher-button 
-          manifest="manifest.json" 
-          label="Install Firmware" 
-          theme="dark" 
-          size="13">
-        </esp-flasher-button>
+        <esp-flasher-button manifest="manifest.json" label="Install firmware" theme="dark"
+          size="13" wifi="false" no-wifi></esp-flasher-button>
 
-        <!-- Direct Web Serial Connect Button with SVG Icon -->
-        <button class="btn-serial" id="btnConnectSerial" title="Connect to ESP32 over Web Serial UART (115200 Baud)">
+        <button class="btn-serial" id="btnConnectSerial" title="Connect to ESP32 over Web Serial (115200 baud)">
           <svg class="svg-icon" viewBox="0 0 24 24">
-            <path d="M12 2v20M8 5h8M9 9h6M7 19h10"/>
+            <path d="M12 2v20M8 5h8M9 9h6M7 19h10" />
           </svg>
           <span id="btnSerialText">Connect USB Serial</span>
         </button>
 
-        <!-- Status Telemetry Bar -->
         <div class="status-bar" id="statusBar">
           <span class="status-dot disconnected" id="statusDot"></span>
           <span class="status-text" id="statusText">Disconnected</span>
@@ -58,241 +53,166 @@
       </div>
     </header>
 
-    <!-- Mode Selector Tabs -->
-    <nav class="mode-tabs" role="tablist">
-      <button class="tab-btn active" id="tabMode1" role="tab" aria-selected="true" data-mode="1">
-        <svg class="svg-icon" viewBox="0 0 24 24">
-          <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-          <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
-          <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
-          <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
-        </svg>
-        <span class="tab-index">01</span>
-        <span>Palm Switch</span>
-      </button>
-
-      <button class="tab-btn" id="tabMode2" role="tab" aria-selected="false" data-mode="2">
-        <svg class="svg-icon" viewBox="0 0 24 24">
-          <line x1="4" y1="21" x2="4" y2="14"/>
-          <line x1="4" y1="10" x2="4" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12" y2="3"/>
-          <line x1="20" y1="21" x2="20" y2="16"/>
-          <line x1="20" y1="12" x2="20" y2="3"/>
-          <line x1="1" y1="14" x2="7" y2="14"/>
-          <line x1="9" y1="8" x2="15" y2="8"/>
-          <line x1="17" y1="16" x2="23" y2="16"/>
-        </svg>
-        <span class="tab-index">02</span>
-        <span>Pinch Dimmer</span>
-      </button>
-
-      <button class="tab-btn" id="tabMode3" role="tab" aria-selected="false" data-mode="3">
-        <svg class="svg-icon" viewBox="0 0 24 24">
-          <line x1="4" y1="9" x2="20" y2="9"/>
-          <line x1="4" y1="15" x2="20" y2="15"/>
-          <line x1="10" y1="3" x2="8" y2="21"/>
-          <line x1="16" y1="3" x2="14" y2="21"/>
-        </svg>
-        <span class="tab-index">03</span>
-        <span>Finger Counter</span>
-      </button>
-    </nav>
-
-    <!-- Main Workspace Layout -->
     <main class="workspace-grid">
-      
-      <!-- Left Panel: Camera Viewport -->
-      <section class="card-panel">
-        <div class="panel-header">
-          <div class="panel-title-group">
-            <svg class="svg-icon" viewBox="0 0 24 24">
-              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-              <circle cx="12" cy="13" r="3"/>
-            </svg>
-            <span class="panel-title">Vision Tracking Stream</span>
-          </div>
-          <span class="panel-tag" id="handTrackingStatus">No Hand Detected</span>
-        </div>
 
+      <!-- Camera fills the left side -->
+      <section class="card-panel camera-panel">
         <div class="viewport-frame">
           <video id="webcamVideo" playsinline muted></video>
           <canvas id="outputCanvas"></canvas>
+          <span class="panel-tag" id="handTrackingStatus">No Hand Detected</span>
+          <span class="meta-fps" id="fpsDisplay">0 FPS</span>
 
-          <!-- Fallback Card with Professional SVG Icon -->
           <div class="viewport-fallback" id="cameraFallback">
             <div class="fallback-icon-wrap">
               <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24">
-                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-                <circle cx="12" cy="13" r="3"/>
+                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                <circle cx="12" cy="13" r="3" />
               </svg>
             </div>
-            <h3 class="fallback-heading" id="fallbackTitle">Webcam Access Required</h3>
-            <p class="fallback-text" id="fallbackDesc">
-              Enable your camera to run client-side hand tracking. Video inference is processed 100% locally on your machine via WebAssembly.
-            </p>
-            <button class="btn-solid-primary" id="btnEnableCamera">Enable Camera</button>
+            <h3 class="fallback-heading" id="fallbackTitle">Webcam access required</h3>
+            <p class="fallback-text" id="fallbackDesc">Enable your camera to run hand tracking. Video is processed
+              locally in your browser and never uploaded.</p>
+            <button class="btn-solid-primary" id="btnEnableCamera">Enable camera</button>
           </div>
-        </div>
-
-        <div class="panel-footer-meta">
-          <span>Local MediaPipe WASM • Zero Cloud Overhead</span>
-          <span class="meta-fps" id="fpsDisplay">0 FPS</span>
         </div>
       </section>
 
-      <!-- Right Panel: Telemetry & Hardware Control -->
-      <section class="card-panel">
-        <div class="panel-header">
-          <div class="panel-title-group">
+      <!-- Controls on the right -->
+      <aside class="side-column">
+
+        <!-- tab-button is the class app.js queries; tab-btn is the style hook -->
+        <nav class="mode-tabs" role="tablist" aria-label="Gesture mode">
+          <button class="tab-btn tab-button active" id="tabMode1" role="tab" aria-selected="true" data-mode="1">
             <svg class="svg-icon" viewBox="0 0 24 24">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-              <line x1="8" y1="21" x2="16" y2="21"/>
-              <line x1="12" y1="17" x2="12" y2="21"/>
+              <path d="M18 11V6a2 2 0 0 0-4 0v0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8" />
+              <path
+                d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
             </svg>
-            <span class="panel-title">Telemetry & LED Monitor</span>
+            <span>Palm switch</span>
+          </button>
+          <button class="tab-btn tab-button" id="tabMode2" role="tab" aria-selected="false" data-mode="2">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <line x1="4" y1="21" x2="4" y2="14" />
+              <line x1="4" y1="10" x2="4" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12" y2="3" />
+              <line x1="20" y1="21" x2="20" y2="16" />
+              <line x1="20" y1="12" x2="20" y2="3" />
+              <line x1="1" y1="14" x2="7" y2="14" />
+              <line x1="9" y1="8" x2="15" y2="8" />
+              <line x1="17" y1="16" x2="23" y2="16" />
+            </svg>
+            <span>Pinch dimmer</span>
+          </button>
+          <button class="tab-btn tab-button" id="tabMode3" role="tab" aria-selected="false" data-mode="3">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <line x1="4" y1="9" x2="20" y2="9" />
+              <line x1="4" y1="15" x2="20" y2="15" />
+              <line x1="10" y1="3" x2="8" y2="21" />
+              <line x1="16" y1="3" x2="14" y2="21" />
+            </svg>
+            <span>Finger counter</span>
+          </button>
+        </nav>
+
+        <section class="card-panel hardware-strip-box">
+          <div class="strip-header">
+            <span class="strip-title">LED output</span>
+            <span class="strip-pins">GPIO 13, 14, 27, 26, 25</span>
           </div>
-          <span class="panel-tag">ESP32 Hardware</span>
-        </div>
+          <div class="led-grid">
+            <div class="led-unit">
+              <div class="led-node" id="led0"></div><span class="led-id">LED 1</span>
+            </div>
+            <div class="led-unit">
+              <div class="led-node" id="led1"></div><span class="led-id">LED 2</span>
+            </div>
+            <div class="led-unit">
+              <div class="led-node" id="led2"></div><span class="led-id">LED 3</span>
+            </div>
+            <div class="led-unit">
+              <div class="led-node" id="led3"></div><span class="led-id">LED 4</span>
+            </div>
+            <div class="led-unit">
+              <div class="led-node" id="led4"></div><span class="led-id">LED 5</span>
+            </div>
+          </div>
+        </section>
 
         <div class="panel-body">
-          
-          <!-- Virtual 5-LED Strip Monitor -->
-          <div class="hardware-strip-box">
-            <div class="strip-header">
-              <span class="strip-title">Hardware LED Array</span>
-              <span class="strip-pins">GPIO 13, 14, 27, 26, 25</span>
-            </div>
-            <div class="led-grid">
-              <div class="led-unit">
-                <div class="led-node" id="led0"></div>
-                <span class="led-id">LED 1</span>
-              </div>
-              <div class="led-unit">
-                <div class="led-node" id="led1"></div>
-                <span class="led-id">LED 2</span>
-              </div>
-              <div class="led-unit">
-                <div class="led-node" id="led2"></div>
-                <span class="led-id">LED 3</span>
-              </div>
-              <div class="led-unit">
-                <div class="led-node" id="led3"></div>
-                <span class="led-id">LED 4</span>
-              </div>
-              <div class="led-unit">
-                <div class="led-node" id="led4"></div>
-                <span class="led-id">LED 5</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Mode 1 Pane: Palm Switch -->
+          <!-- Mode 1 -->
           <div class="mode-pane active" id="paneMode1">
-            <div class="instruction-box">
-              Open palm sets all 5 LEDs to full brightness; closed fist turns all LEDs off. Dispatched only on state change.
-            </div>
-
             <div class="telemetry-row">
-              <span class="telemetry-label">Classified Gesture State</span>
+              <span class="telemetry-label">Detected gesture</span>
               <div class="state-pill" id="palmStateBadge">WAITING FOR HAND</div>
             </div>
-
+            <p class="instruction-box">Open palm turns all 5 LEDs on. Closed fist turns them off. A command is sent only
+              when the state changes.</p>
             <div class="command-outbox">
-              <span class="outbox-label">
-                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                Active Frame:
-              </span>
+              <span class="outbox-label">Last command sent</span>
               <code class="outbox-code" id="cmdMode1">MODE1:OFF</code>
             </div>
           </div>
 
-          <!-- Mode 2 Pane: Pinch Dimmer -->
+          <!-- Mode 2 -->
           <div class="mode-pane" id="paneMode2">
-            <div class="instruction-box">
-              Pinch thumb and index finger together to dim; separate them to brighten. Dispatched throttled at ~10 Hz.
-            </div>
-
             <div class="telemetry-row">
               <div class="dimmer-metric-header">
-                <span class="telemetry-label">PWM Duty Resolution</span>
+                <span class="telemetry-label">Brightness</span>
                 <span class="dimmer-metric-value" id="brightnessNumeric">0 / 255 (0%)</span>
               </div>
               <div class="flat-bar-rail">
                 <div class="flat-bar-fill" id="brightnessBar"></div>
               </div>
             </div>
-
-            <div class="telemetry-sub">
-              <span>Euclidean Pinch Distance:</span>
-              <span class="sub-mono" id="pinchDistanceVal">0.000</span>
-            </div>
-
+            <div class="telemetry-sub"><span>Distance between fingertips</span><span class="sub-mono"
+                id="pinchDistanceVal">0.000</span></div>
+            <p class="instruction-box">Pinch thumb and index finger together to dim, spread them apart to brighten.
+              Updates about 10 times per second.</p>
             <div class="command-outbox">
-              <span class="outbox-label">
-                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                Active Frame:
-              </span>
+              <span class="outbox-label">Last command sent</span>
               <code class="outbox-code" id="cmdMode2">MODE2:0</code>
             </div>
           </div>
 
-          <!-- Mode 3 Pane: Finger Counter -->
+          <!-- Mode 3 -->
           <div class="mode-pane" id="paneMode3">
-            <div class="instruction-box">
-              Hold up 0 to 5 fingers to illuminate the exact corresponding number of LEDs in sequence.
-            </div>
-
             <div class="telemetry-row">
-              <span class="telemetry-label">Extended Finger Tally</span>
+              <span class="telemetry-label">Fingers up</span>
               <div class="counter-box" id="fingerCountDisplay">0</div>
             </div>
-
             <div class="finger-chips-grid">
-              <div class="finger-chip-unit" id="chipThumb">
-                <span class="chip-name">Thumb</span>
-                <span class="chip-val">DOWN</span>
-              </div>
-              <div class="finger-chip-unit" id="chipIndex">
-                <span class="chip-name">Index</span>
-                <span class="chip-val">DOWN</span>
-              </div>
-              <div class="finger-chip-unit" id="chipMiddle">
-                <span class="chip-name">Middle</span>
-                <span class="chip-val">DOWN</span>
-              </div>
-              <div class="finger-chip-unit" id="chipRing">
-                <span class="chip-name">Ring</span>
-                <span class="chip-val">DOWN</span>
-              </div>
-              <div class="finger-chip-unit" id="chipPinky">
-                <span class="chip-name">Pinky</span>
-                <span class="chip-val">DOWN</span>
-              </div>
+              <div class="finger-chip-unit" id="chipThumb"><span class="chip-name">Thumb</span><span
+                  class="chip-val finger-state">DOWN</span></div>
+              <div class="finger-chip-unit" id="chipIndex"><span class="chip-name">Index</span><span
+                  class="chip-val finger-state">DOWN</span></div>
+              <div class="finger-chip-unit" id="chipMiddle"><span class="chip-name">Middle</span><span
+                  class="chip-val finger-state">DOWN</span></div>
+              <div class="finger-chip-unit" id="chipRing"><span class="chip-name">Ring</span><span
+                  class="chip-val finger-state">DOWN</span></div>
+              <div class="finger-chip-unit" id="chipPinky"><span class="chip-name">Pinky</span><span
+                  class="chip-val finger-state">DOWN</span></div>
             </div>
-
+            <p class="instruction-box">Hold up 0 to 5 fingers to light that many LEDs in order.</p>
             <div class="command-outbox">
-              <span class="outbox-label">
-                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                Active Frame:
-              </span>
+              <span class="outbox-label">Last command sent</span>
               <code class="outbox-code" id="cmdMode3">MODE3:0</code>
             </div>
           </div>
-
         </div>
-      </section>
 
+        <footer class="app-footer">
+          <span>By <a href="https://github.com/skr-electronics-lab" target="_blank" rel="noopener"
+              class="footer-link">SKR Electronics Lab</a> · Apache 2.0</span>
+          <span>115200 baud</span>
+        </footer>
+      </aside>
     </main>
-
-    <!-- Professional Technical Footer -->
-    <footer class="app-footer">
-      <span>GestureLED • Open-Source Hardware Vision Controller by <a href="https://github.com/skr-electronics-lab" target="_blank" rel="noopener" class="footer-link">SKR Electronics Lab</a></span>
-      <span>Apache 2.0 License • Web Serial Protocol @ 115200 Baud</span>
-    </footer>
-
   </div>
 
   <script src="app.js"></script>
 </body>
+
 </html>

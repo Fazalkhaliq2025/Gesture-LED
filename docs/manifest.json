@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "home_page": "https://github.com/skr-electronics-lab/GestureLED",
   "funding_url": "https://ko-fi.com/skrelectronicslab",
+  "wifi": false,
+  "improv": false,
   "builds": [
     {
       "chipFamily": "ESP32",
