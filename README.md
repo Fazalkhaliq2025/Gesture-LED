@@ -1,43 +1,73 @@
-# GestureLED — Hand-Gesture Controlled 5-LED System with Browser Web Serial
+<div align="center">
 
-A high-performance, real-time hand-gesture controlled IoT lighting system built for the **Espressif ESP32** (Arduino Core 3.x). Powered by **MediaPipe Hands** on the web, it connects directly over the native browser **Web Serial API** (115200 baud) for ultra-low latency, zero network dropouts, and instant setup without any Wi-Fi configuration.
+# GestureLED
 
-Includes an integrated browser firmware flasher using [esp-flasher-button](https://github.com/skr-electronics-lab/esp-flasher-button) for 1-click installation directly from GitHub Pages.
+**Real-Time Hand-Gesture Vision Controller for ESP32 via Direct Web Serial**
 
-Developed by **SKR Electronics Lab (SK Raihan)**.
+[![ESP32 Arduino Core 3.x](https://img.shields.io/badge/ESP32_Core-3.x-red?style=for-the-badge&logo=espressif)](https://github.com/espressif/arduino-esp32)
+[![MediaPipe Hands](https://img.shields.io/badge/MediaPipe-Hands_WASM-blue?style=for-the-badge&logo=google)](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)
+[![Web Serial API](https://img.shields.io/badge/Web_Serial-115200_Baud-8b5cf6?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-22c55e?style=for-the-badge&logo=github)](https://skr-electronics-lab.github.io/GestureLED/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-orange?style=for-the-badge)](LICENSE)
+
+<br/>
+
+### 🌐 [Launch Live Web Controller & 1-Click Browser Flasher](https://skr-electronics-lab.github.io/GestureLED/)
+
+*No IDEs, no command line, and no Wi-Fi setup required. Flash and control straight from Chrome or Edge.*
+
+</div>
 
 ---
 
-## Key Highlights
+## Overview
 
-- **Direct Web Serial Control:** Real-time bi-directional UART communication straight from the browser (`navigator.serial`) at 115200 baud.
-- **1-Click Browser Flasher:** Integrated `<esp-flasher-button>` lets anyone flash the compiled ESP32 firmware binary directly from Chrome or Edge.
-- **100% Client-Side Privacy:** Webcam frames are processed locally inside the browser using MediaPipe Hands WASM. No video feeds or images are ever transmitted over the network.
-- **ESP32 Arduino Core 3.x LEDC API:** Flicker-free 5 kHz PWM dimming and digital switching on 5 GPIOs using the new `ledcAttach` and `ledcWrite` APIs.
-- **Modern Minimal UI:** Precision-tech aesthetic with flat colors, subtle borders, generous whitespace, system typography, and full dark/light mode support.
+**GestureLED** is a high-performance embedded vision controller that bridges Google's **MediaPipe Hands** machine learning pipeline directly to an **Espressif ESP32** microcontroller over the native browser **Web Serial API**.
+
+By leveraging high-speed USB-UART (115200 baud) instead of local Wi-Fi, GestureLED eliminates network latency, packet dropouts, and browser camera permission blocks—delivering instantaneous, flicker-free hardware lighting response processed 100% locally on your machine.
 
 ---
 
-## Architecture Overview
+## Key Features
+
+- **Direct Web Serial Control:** Native hardware UART communication (`navigator.serial`) at 115200 baud. Zero cloud overhead and zero network configuration.
+- **1-Click In-Browser Firmware Flashing:** Integrated [`<esp-flasher-button>`](https://github.com/skr-electronics-lab/esp-flasher-button) allows flashing pre-compiled binaries directly from GitHub Pages in seconds.
+- **100% Client-Side Privacy:** MediaPipe Hands runs entirely inside the browser through WebAssembly. Video feeds never leave your local machine.
+- **ESP32 Arduino Core 3.x LEDC Driver:** 5 kHz flicker-free hardware PWM dimming and digital switching using modern `ledcAttach` and `ledcWrite` APIs across 5 discrete GPIOs.
+- **Precision Dark Interface:** Built with clean structural lines, dark obsidian surfaces, vivid `#2BFF00` skeletal tracking, solid `#FF0000` joint nodes, and zero distracting visual clutter.
+
+---
+
+## Gesture Control Modes
+
+| Mode | Gesture | Action & Hardware Behavior | Dispatched Protocol Frame |
+|:---:|:---|:---|:---|
+| **01** | **Palm Switch** | Open palm illuminates all 5 LEDs to 100% duty; closed fist switches all 5 LEDs OFF. | `MODE1:ON`<br/>`MODE1:OFF`<br/>*(State change only)* |
+| **02** | **Pinch Dimmer** | Euclidean distance between thumb tip and index tip is mapped directly to 8-bit PWM duty (0–255). | `MODE2:<0-255>`<br/>*(Throttled at 10 Hz)* |
+| **03** | **Finger Counter** | Evaluates extended fingers (0 to 5) and illuminates that exact number of LEDs sequentially. | `MODE3:<0-5>`<br/>*(Count change only)* |
+
+---
+
+## System Architecture
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        Web Browser (Client Side)                       │
 │                                                                        │
-│   Webcam Feed ──► MediaPipe Hands ──► Gesture Engine                   │
-│                                            │                           │
-│   ┌────────────────────────────────────────┴───────────────────────┐   │
-│   │ Mode 1 (Palm):     MODE1:ON / MODE1:OFF   (State change only)  │   │
-│   │ Mode 2 (Pinch):    MODE2:<0-255>          (Throttled ~10 Hz)   │   │
-│   │ Mode 3 (Count):    MODE3:<0-5>            (Count change only)  │   │
-│   └────────────────────────────────────────┬───────────────────────┘   │
-│                                            │ Plain Text Frames + '\n'  │
-└────────────────────────────────────────────┼───────────────────────────┘
-                                             │ Web Serial API (115200 Baud)
-┌────────────────────────────────────────────▼───────────────────────────┐
-│                          ESP32 Microcontroller                         │
+│   Webcam Feed ──► MediaPipe Hands WASM ──► Gesture Classification      │
+│                                                   │                    │
+│   ┌───────────────────────────────────────────────┴────────────────┐   │
+│   │ Mode 1 (Palm Switch):    MODE1:ON / MODE1:OFF  (Edge Trigger)  │   │
+│   │ Mode 2 (Pinch Dimmer):   MODE2:<0-255>         (10 Hz Rate)    │   │
+│   │ Mode 3 (Finger Counter): MODE3:<0-5>           (Edge Trigger)  │   │
+│   └───────────────────────────────────────────────┬────────────────┘   │
+│                                                   │ Plain Text + '\n'  │
+└───────────────────────────────────────────────────┼────────────────────┘
+                                                    │ Web Serial (115200 Baud)
+┌───────────────────────────────────────────────────▼────────────────────┐
+│                    ESP32 WROOM-32 Microcontroller                      │
 │                                                                        │
-│  [Hardware UART] ──► Non-Blocking Parser ──► LEDC PWM (Core 3.x)       │
+│  [Hardware UART] ──► Non-Blocking Parser ──► Core 3.x LEDC PWM Driver  │
 │                                               ├── GPIO 13 (LED 1)      │
 │                                               ├── GPIO 14 (LED 2)      │
 │                                               ├── GPIO 27 (LED 3)      │
@@ -50,98 +80,114 @@ Developed by **SKR Electronics Lab (SK Raihan)**.
 
 ## Hardware Setup
 
-### Required Components
-- 1x ESP32 WROOM-32 DevKit (30-pin or 38-pin standard `esp32dev`)
-- 5x LEDs (5mm or 3mm, any color)
-- 5x Current-limiting resistors (220Ω to 330Ω, 1/4W)
-- 1x Solderless breadboard and jumper wires
-- 1x Micro-USB data cable
+### Bill of Materials
+- **1x** ESP32 WROOM-32 DevKit (standard 30-pin or 38-pin module)
+- **5x** LEDs (5mm or 3mm, standard forward voltage)
+- **5x** Current-limiting resistors (220Ω to 330Ω, 1/4W)
+- **1x** Solderless breadboard and jumper wires
+- **1x** Micro-USB data cable (ensure data lines are connected, not charge-only)
 
-### Pinout Configuration
-All 5 LEDs are mapped to standard GPIOs, avoiding all strapping pins (0, 2, 4, 5, 12, 15):
+### Pinout Mapping
+All 5 output channels utilize dedicated general-purpose GPIOs, strictly avoiding ESP32 strapping pins (`GPIO 0, 2, 4, 5, 12, 15`):
 
-| LED Number | ESP32 GPIO | Resistor | Function |
+| LED Index | ESP32 GPIO | Resistor | Functionality |
 |:---:|:---:|:---:|:---|
-| **LED 1** | **GPIO 13** | 220Ω – 330Ω | LEDC PWM / Digital ON-OFF |
-| **LED 2** | **GPIO 14** | 220Ω – 330Ω | LEDC PWM / Digital ON-OFF |
-| **LED 3** | **GPIO 27** | 220Ω – 330Ω | LEDC PWM / Digital ON-OFF |
-| **LED 4** | **GPIO 26** | 220Ω – 330Ω | LEDC PWM / Digital ON-OFF |
-| **LED 5** | **GPIO 25** | 220Ω – 330Ω | LEDC PWM / Digital ON-OFF |
+| **LED 1** | **GPIO 13** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 2** | **GPIO 14** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 3** | **GPIO 27** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 4** | **GPIO 26** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
+| **LED 5** | **GPIO 25** | 220Ω – 330Ω | Digital ON/OFF & 5 kHz LEDC PWM |
 
-> **Wiring:** Connect each GPIO to the Anode (long leg) of an LED. Connect the Cathode (short leg) through a resistor to the ESP32 `GND` rail.
+> **Wiring Schematic:** Connect each GPIO pin to the Anode (longer leg) of an LED. Connect each Cathode (shorter leg) through a current-limiting resistor to the common `GND` rail on the ESP32.
+
+---
+
+## Web Serial Command Protocol
+
+All commands are transmitted as standard ASCII string frames terminated by a newline (`\n`):
+
+```
+<MODE_IDENTIFIER>:<PAYLOAD>\n
+```
+
+### Safety & Parsing Rules
+1. **Mode Switch Auto-Reset:** When switching to a different mode prefix (e.g. from `MODE1` to `MODE2`), the ESP32 firmware **automatically drives all 5 LEDs to 0** before applying new duty parameters.
+2. **Defensive Validation:** Any malformed frames, out-of-range payloads, or unmapped prefixes are safely dropped and logged to UART without causing watchdog timeouts or panics.
+3. **Bandwidth Optimization:**
+   - `MODE1`: Dispatched strictly on binary state change (`OPEN` ↔ `CLOSED`).
+   - `MODE2`: Dispatched throttled to ~10 frames per second (100ms interval) to prevent UART buffer overflow.
+   - `MODE3`: Dispatched strictly on integer count change (`0` to `5`).
+
+---
+
+## Getting Started
+
+### Option A: 1-Click Browser Flasher (Fastest)
+1. Open the live dashboard: **[https://skr-electronics-lab.github.io/GestureLED/](https://skr-electronics-lab.github.io/GestureLED/)**
+2. Connect your ESP32 to your PC using a USB data cable.
+3. Click **"Install firmware"** in the top header and select your ESP32 COM port.
+4. Once flashed, click **"Enable camera"** and **"Connect USB Serial"** to start controlling immediately.
+
+### Option B: Build from Source with PlatformIO
+Clone the repository and compile using PlatformIO CLI or VSCode:
+
+```powershell
+# Clone the repository
+git clone https://github.com/skr-electronics-lab/GestureLED.git
+cd GestureLED
+
+# Build and upload firmware to ESP32
+pio run --target upload
+
+# Open serial monitor
+pio device monitor -b 115200
+```
+
+### Option C: Run Web Controller Locally
+Both the Web Serial API and Camera `getUserMedia` require a secure context (`HTTPS` or `localhost`):
+
+```powershell
+# Serve the web controller locally
+cd docs
+python -m http.server 8000
+```
+Then visit **`http://localhost:8000`** in Google Chrome or Microsoft Edge.
 
 ---
 
 ## Project Structure
 
 ```
-gesture-led-esp32-web/
-├── platformio.ini       # PlatformIO configuration (Core 3.x, upload speed, monitor)
+GestureLED/
+├── platformio.ini         # PlatformIO build configuration (Core 3.x, 115200 baud)
+├── partitions.csv         # Flash partition table
 ├── src/
-│   └── main.cpp         # Firmware: LEDC PWM driver & non-blocking Serial parser
-├── docs/                # GitHub Pages Root (Web App & Flasher)
-│   ├── index.html       # Web dashboard with embedded esp-flasher-button
-│   ├── style.css        # Minimal precision-tech styling (dark & light mode)
-│   ├── app.js           # MediaPipe Hands tracking & Web Serial controller
-│   ├── manifest.json    # ESP Web Tools firmware manifest
-│   └── firmware/        # Pre-compiled binaries for 1-click browser flashing
+│   └── main.cpp           # Firmware: Non-blocking Serial parser & LEDC PWM engine
+├── docs/                  # GitHub Pages Root (Web App & Flasher)
+│   ├── index.html         # Web application shell & esp-flasher-button integration
+│   ├── style.css          # Precision-tech dark interface system
+│   ├── app.js             # MediaPipe Hands tracking & Web Serial manager
+│   ├── favicon.svg        # Vector project icon
+│   ├── manifest.json      # Firmware manifest for browser flashing
+│   └── firmware/          # Pre-compiled binaries for 1-click installation
 │       ├── bootloader.bin
 │       ├── partitions.bin
 │       ├── boot_app0.bin
 │       └── firmware.bin
-└── README.md            # Project documentation
+└── README.md              # Project documentation
 ```
 
 ---
 
-## Running the Web App Locally
+## Author & Credits
 
-Because the Web Serial API and Webcam both require a Secure Context (`HTTPS` or `localhost`), run a local HTTP server:
+Developed by **SK Raihan (SKR Electronics Lab)**.
 
-```powershell
-# Navigate to docs folder
-cd docs
-
-# Start local server
-python -m http.server 8000
-```
-Then open **`http://localhost:8000`** in Google Chrome or Microsoft Edge.
-
----
-
-## Hosting on GitHub Pages
-
-1. Push this repository to GitHub.
-2. In your repository settings, go to **Pages**.
-3. Under **Build and deployment**, select:
-   - **Source:** Deploy from a branch
-   - **Branch:** `main` / Folder: `/docs`
-4. GitHub Pages will publish your site to `https://<your-username>.github.io/<repo-name>/`.
-5. Anyone visiting your link can:
-   - Click **"Install Firmware"** to flash their ESP32 via Web Serial in seconds.
-   - Click **"Connect USB Controller"** to link the dashboard.
-   - Control the LEDs using their webcam gestures immediately!
-
----
-
-## Web Serial Command Protocol
-
-Communication between the web browser and the ESP32 occurs over UART at 115200 baud via plain-text ASCII frames terminated with a newline (`\n`):
-
-| Command Frame | Target Mode | Description | Hardware Effect |
-|:---|:---:|:---|:---|
-| `MODE1:ON` | Mode 1 | Open palm detected | All 5 LEDs set to full duty (255) |
-| `MODE1:OFF` | Mode 1 | Closed fist detected | All 5 LEDs turned off (0) |
-| `MODE2:<0-255>` | Mode 2 | Pinch distance mapped | All 5 LEDs set to PWM duty (0 to 255) |
-| `MODE3:<0-5>` | Mode 3 | Finger count (0 to 5) | Exactly `N` LEDs turn on (1 to 5), rest off |
-
-### Safety Rules
-1. **Mode Switch Reset:** Whenever an incoming message prefix changes (e.g. from `MODE1` to `MODE2`), the firmware **immediately resets all 5 LEDs to OFF** before applying the new state.
-2. **Defensive Validation:** Non-numeric payloads, out-of-range values, or malformed frames missing `:` are rejected without crashing, and logged to Serial.
-3. **Throttling & Debounce:**
-   - `MODE1`: Dispatched **only** when palm state toggles (`OPEN` ↔ `CLOSED`).
-   - `MODE2`: Dispatched at a maximum rate of **10 messages per second** (100ms throttle timer).
-   - `MODE3`: Dispatched **only** when finger count changes (`0` to `5`).
+- **GitHub:** [@skr-electronics-lab](https://github.com/skr-electronics-lab)
+- **YouTube:** [@skr_electronics_lab](https://youtube.com/@skr_electronics_lab)
+- **Twitter (X):** [@skrelectronics](https://twitter.com/skrelectronics)
+- **Instagram:** [@skr_electronics_lab](https://instagram.com/skr_electronics_lab)
+- **Contact:** `skrelectronicslab@gmail.com`
 
 ---
 

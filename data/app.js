@@ -421,10 +421,10 @@
     const h = canvasElement.height;
     const s = w / 640; // scale with camera resolution
 
-    // Bones - tender young banana leaf green (child leaf / fresh sprout)
+    // Bones - bright vivid spring green (#2BFF00)
     ctx.lineCap = 'round';
     ctx.lineWidth = 2.8 * s;
-    ctx.strokeStyle = '#98E332';
+    ctx.strokeStyle = '#2BFF00';
     connections.forEach(([i, j]) => {
       ctx.beginPath();
       ctx.moveTo(landmarks[i].x * w, landmarks[i].y * h);
@@ -434,26 +434,23 @@
 
     // Pinch distance: caliper line between thumb tip (4) and index tip (8) in Mode 2
     if (currentMode === 2) {
-      ctx.lineWidth = 3.0 * s;
-      ctx.strokeStyle = '#EF4444';
+      ctx.lineWidth = 2.8 * s;
+      ctx.strokeStyle = '#FF0000';
       ctx.beginPath();
       ctx.moveTo(landmarks[4].x * w, landmarks[4].y * h);
       ctx.lineTo(landmarks[8].x * w, landmarks[8].y * h);
       ctx.stroke();
     }
 
-    // Joints - balanced point size (increased back to 4.0 for clear visibility, 4.8 for active pinch)
+    // Joints - pure full red (#FF0000), solid fill with NO white border
     landmarks.forEach((pt, index) => {
       const isPinchPoint = (currentMode === 2 && (index === 4 || index === 8));
       const radius = isPinchPoint ? (4.8 * s) : (4.0 * s);
 
       ctx.beginPath();
       ctx.arc(pt.x * w, pt.y * h, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = isPinchPoint ? '#EF4444' : '#FF3333';
+      ctx.fillStyle = '#FF0000';
       ctx.fill();
-      ctx.lineWidth = 1.3 * s;
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.stroke();
     });
   }
 
