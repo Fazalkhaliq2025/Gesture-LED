@@ -145,6 +145,31 @@ body {
   gap: 10px
 }
 
+.btn-flasher-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  font: 600 13px var(--sans);
+  cursor: pointer;
+  transition: background .12s, border-color .12s, color .12s;
+}
+
+.btn-flasher-custom:hover {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: #fff;
+}
+
+.btn-flasher-custom .svg-icon {
+  color: var(--led-on);
+}
+
 .btn-serial {
   display: inline-flex;
   align-items: center;
@@ -668,10 +693,63 @@ body {
 .circuit-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+}
+
+.wokwi-iframe-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--raised);
+  flex-shrink: 0;
+}
+
+.wokwi-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.wokwi-header-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.wokwi-header-title .svg-icon {
+  color: var(--led-on);
+  width: 14px;
+  height: 14px;
+}
+
+.wokwi-ext-link {
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  transition: color .12s;
+}
+
+.wokwi-ext-link:hover {
+  color: var(--text);
+}
+
+.wokwi-embed-frame {
+  width: 100%;
+  height: 260px;
+  border: 0;
+  display: block;
+  background: #1e1e1e;
 }
 
 .circuit-table-wrap {
