@@ -163,6 +163,58 @@
             </div>
             <p class="instruction-box">Open palm turns all 5 LEDs on. Closed fist turns them off. A command is sent only
               when the state changes.</p>
+
+            <!-- Live Hardware Output Matrix -->
+            <div class="matrix-card">
+              <div class="matrix-card-header">
+                <span class="matrix-card-title">Live Hardware Channels</span>
+                <span class="matrix-card-badge">ESP32 GPIO Rails</span>
+              </div>
+              <div class="matrix-channels">
+                <div class="channel-row ch-row-0">
+                  <span class="channel-pin">GPIO 13</span>
+                  <span class="channel-meta">LED 1</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-0">OFF</span>
+                </div>
+                <div class="channel-row ch-row-1">
+                  <span class="channel-pin">GPIO 14</span>
+                  <span class="channel-meta">LED 2</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-1">OFF</span>
+                </div>
+                <div class="channel-row ch-row-2">
+                  <span class="channel-pin">GPIO 27</span>
+                  <span class="channel-meta">LED 3</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-2">OFF</span>
+                </div>
+                <div class="channel-row ch-row-3">
+                  <span class="channel-pin">GPIO 26</span>
+                  <span class="channel-meta">LED 4</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-3">OFF</span>
+                </div>
+                <div class="channel-row ch-row-4">
+                  <span class="channel-pin">GPIO 25</span>
+                  <span class="channel-meta">LED 5</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-4">OFF</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live UART Stream Console -->
+            <div class="uart-log-card">
+              <div class="uart-log-header">
+                <span class="uart-log-title">Serial Stream (UART @ 115200)</span>
+                <span class="uart-log-rate">TX · Edge Trigger</span>
+              </div>
+              <div class="uart-log-body">
+                <div class="uart-line muted">Ready. Move hand in front of camera.</div>
+              </div>
+            </div>
+
             <div class="command-outbox">
               <span class="outbox-label">Last command sent</span>
               <code class="outbox-code" id="cmdMode1">MODE1:OFF</code>
@@ -184,6 +236,58 @@
                 id="pinchDistanceVal">0.000</span></div>
             <p class="instruction-box">Pinch thumb and index finger together to dim, spread them apart to brighten.
               Updates about 10 times per second.</p>
+
+            <!-- Live Hardware Output Matrix -->
+            <div class="matrix-card">
+              <div class="matrix-card-header">
+                <span class="matrix-card-title">Live Hardware Channels</span>
+                <span class="matrix-card-badge">LEDC 5 kHz PWM</span>
+              </div>
+              <div class="matrix-channels">
+                <div class="channel-row ch-row-0">
+                  <span class="channel-pin">GPIO 13</span>
+                  <span class="channel-meta">LED 1</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-0">0%</span>
+                </div>
+                <div class="channel-row ch-row-1">
+                  <span class="channel-pin">GPIO 14</span>
+                  <span class="channel-meta">LED 2</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-1">0%</span>
+                </div>
+                <div class="channel-row ch-row-2">
+                  <span class="channel-pin">GPIO 27</span>
+                  <span class="channel-meta">LED 3</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-2">0%</span>
+                </div>
+                <div class="channel-row ch-row-3">
+                  <span class="channel-pin">GPIO 26</span>
+                  <span class="channel-meta">LED 4</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-3">0%</span>
+                </div>
+                <div class="channel-row ch-row-4">
+                  <span class="channel-pin">GPIO 25</span>
+                  <span class="channel-meta">LED 5</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-4">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live UART Stream Console -->
+            <div class="uart-log-card">
+              <div class="uart-log-header">
+                <span class="uart-log-title">Serial Stream (UART @ 115200)</span>
+                <span class="uart-log-rate">TX · 10 Hz Throttled</span>
+              </div>
+              <div class="uart-log-body">
+                <div class="uart-line muted">Ready. Pinch fingers to modulate PWM.</div>
+              </div>
+            </div>
+
             <div class="command-outbox">
               <span class="outbox-label">Last command sent</span>
               <code class="outbox-code" id="cmdMode2">MODE2:0</code>
@@ -209,6 +313,58 @@
                   class="chip-val finger-state">DOWN</span></div>
             </div>
             <p class="instruction-box">Hold up 0 to 5 fingers to light that many LEDs in order.</p>
+
+            <!-- Live Hardware Output Matrix -->
+            <div class="matrix-card">
+              <div class="matrix-card-header">
+                <span class="matrix-card-title">Live Hardware Channels</span>
+                <span class="matrix-card-badge">Sequential Digital Pins</span>
+              </div>
+              <div class="matrix-channels">
+                <div class="channel-row ch-row-0">
+                  <span class="channel-pin">GPIO 13</span>
+                  <span class="channel-meta">LED 1</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-0">OFF</span>
+                </div>
+                <div class="channel-row ch-row-1">
+                  <span class="channel-pin">GPIO 14</span>
+                  <span class="channel-meta">LED 2</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-1">OFF</span>
+                </div>
+                <div class="channel-row ch-row-2">
+                  <span class="channel-pin">GPIO 27</span>
+                  <span class="channel-meta">LED 3</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-2">OFF</span>
+                </div>
+                <div class="channel-row ch-row-3">
+                  <span class="channel-pin">GPIO 26</span>
+                  <span class="channel-meta">LED 4</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-3">OFF</span>
+                </div>
+                <div class="channel-row ch-row-4">
+                  <span class="channel-pin">GPIO 25</span>
+                  <span class="channel-meta">LED 5</span>
+                  <span class="channel-indicator"></span>
+                  <span class="channel-state ch-val-4">OFF</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live UART Stream Console -->
+            <div class="uart-log-card">
+              <div class="uart-log-header">
+                <span class="uart-log-title">Serial Stream (UART @ 115200)</span>
+                <span class="uart-log-rate">TX · Count Change</span>
+              </div>
+              <div class="uart-log-body">
+                <div class="uart-line muted">Ready. Count fingers in camera view.</div>
+              </div>
+            </div>
+
             <div class="command-outbox">
               <span class="outbox-label">Last command sent</span>
               <code class="outbox-code" id="cmdMode3">MODE3:0</code>

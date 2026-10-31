@@ -645,6 +645,177 @@ body {
   color: var(--led-on)
 }
 
+/* Live Hardware Channel Matrix */
+.matrix-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.matrix-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.matrix-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+
+.matrix-card-badge {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--dim);
+  font-family: var(--mono);
+}
+
+.matrix-channels {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-row {
+  display: grid;
+  grid-template-columns: 62px 1fr 10px 52px;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--line);
+  transition: background 80ms ease;
+}
+
+.channel-row:last-child {
+  border-bottom: none;
+}
+
+.channel-pin {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface);
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.channel-meta {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.channel-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  transition: background 80ms ease;
+}
+
+.channel-row.active .channel-indicator {
+  background: var(--led-on);
+}
+
+.channel-state {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-align: right;
+  color: var(--dim);
+}
+
+.channel-row.active .channel-state {
+  color: var(--led-on);
+}
+
+.channel-row.active {
+  background: rgba(43, 255, 0, 0.04);
+}
+
+/* Live UART Stream Log */
+.uart-log-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.uart-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.uart-log-title {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.uart-log-rate {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--dim);
+  font-family: var(--mono);
+}
+
+.uart-log-body {
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.5;
+  height: 72px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #090A0C;
+}
+
+.uart-line {
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.uart-line.muted {
+  color: var(--dim);
+  font-style: italic;
+}
+
+.uart-line .ts {
+  color: var(--dim);
+  margin-right: 6px;
+}
+
+.uart-line .tx {
+  color: var(--led-on);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.uart-line .payload {
+  color: var(--text);
+  font-weight: 600;
+}
+
 /* Last command row (plain, not a console) */
 .command-outbox {
   margin-top: auto;

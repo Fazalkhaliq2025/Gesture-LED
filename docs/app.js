@@ -199,6 +199,7 @@
    * Dispatch command frame directly to ESP32 over Web Serial.
    */
   async function sendCommand(cmd) {
+    logUartCommand(cmd);
     if (serialWriter) {
       try {
         await serialWriter.write(cmd + '\n');
@@ -207,6 +208,37 @@
       }
     } else {
       console.log('[Controller (Not Connected)]', cmd);
+    }
+  }
+
+  function logUartCommand(cmd) {
+    const d = new Date();
+    const ts = d.toTimeString().split(' ')[0] + '.' + String(d.getMilliseconds()).padStart(3, '0');
+    const logBodies = document.querySelectorAll('.uart-log-body');
+    logBodies.forEach(body => {
+      const initLine = body.querySelector('.muted');
+      if (initLine) initLine.remove();
+
+      while (body.children.length >= 6) {
+        body.removeChild(body.firstChild);
+      }
+      const line = document.createElement('div');
+      line.className = 'uart-line';
+      line.innerHTML = `<span class="ts">${ts}</span><span class="tx">TX ➔</span><span class="payload">${cmd}</span>`;
+      body.appendChild(line);
+      body.scrollTop = body.scrollHeight;
+    });
+  }
+
+  function updateChannelMatrix(states, duties) {
+    for (let i = 0; i < 5; i++) {
+      const rows = document.querySelectorAll(`.ch-row-${i}`);
+      const vals = document.querySelectorAll(`.ch-val-${i}`);
+      const isActive = states[i];
+      const dutyText = duties ? duties[i] : (isActive ? 'ON (100%)' : 'OFF');
+
+      rows.forEach(r => r.classList.toggle('active', !!isActive));
+      vals.forEach(v => v.textContent = dutyText);
     }
   }
 
@@ -257,6 +289,7 @@
       led.classList.remove('active');
       led.style.opacity = '1';
     });
+    updateChannelMatrix([false, false, false, false, false]);
   }
 
   function setVirtualLedsState(allOn) {
@@ -264,6 +297,7 @@
       led.classList.toggle('active', allOn);
       led.style.opacity = '1';
     });
+    updateChannelMatrix([allOn, allOn, allOn, allOn, allOn]);
   }
 
   function setVirtualLedsBrightness(brightness) {
@@ -277,6 +311,13 @@
         led.style.opacity = '1';
       }
     });
+    const pct = Math.round((brightness / 255) * 100);
+    const txt = brightness > 0 ? `${pct}% (${brightness})` : 'OFF (0%)';
+    const isActive = brightness > 0;
+    updateChannelMatrix(
+      [isActive, isActive, isActive, isActive, isActive],
+      [txt, txt, txt, txt, txt]
+    );
   }
 
   function setVirtualLedsCount(count) {
@@ -284,6 +325,9 @@
       led.classList.toggle('active', i < count);
       led.style.opacity = '1';
     });
+    const states = [0, 1, 2, 3, 4].map(i => i < count);
+    const duties = states.map(s => s ? 'ON (100%)' : 'OFF');
+    updateChannelMatrix(states, duties);
   }
 
   // ============================================================================
