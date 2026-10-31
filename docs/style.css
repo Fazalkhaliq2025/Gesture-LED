@@ -645,24 +645,26 @@ body {
   color: var(--led-on)
 }
 
-/* Live Hardware Channel Matrix */
+/* Live Hardware Channel Matrix - Fills available card height smoothly */
 .matrix-card {
   display: flex;
   flex-direction: column;
   background: var(--raised);
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 10px;
   overflow: hidden;
-  margin-top: 2px;
+  flex: 1;
+  min-height: 220px;
 }
 
 .matrix-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 12px;
+  padding: 8px 14px;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
 }
 
 .matrix-card-title {
@@ -682,16 +684,18 @@ body {
 .matrix-channels {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .channel-row {
   display: grid;
-  grid-template-columns: 62px 1fr 10px 52px;
+  grid-template-columns: 58px 46px 1fr 64px;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
+  gap: 12px;
+  padding: 0 14px;
   border-bottom: 1px solid var(--line);
-  transition: background 80ms ease;
+  flex: 1;
+  transition: background 60ms ease;
 }
 
 .channel-row:last-child {
@@ -704,7 +708,7 @@ body {
   font-weight: 600;
   color: var(--muted);
   background: var(--surface);
-  padding: 1px 5px;
+  padding: 2px 5px;
   border-radius: 4px;
   border: 1px solid var(--line);
   text-align: center;
@@ -714,23 +718,28 @@ body {
   font-size: 11px;
   font-weight: 500;
   color: var(--text);
+  white-space: nowrap;
 }
 
-.channel-indicator {
-  width: 6px;
+.channel-rail {
+  width: 100%;
   height: 6px;
-  border-radius: 50%;
-  background: var(--line-strong);
-  transition: background 80ms ease;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
 }
 
-.channel-row.active .channel-indicator {
+.channel-fill {
+  width: 0%;
+  height: 100%;
   background: var(--led-on);
+  border-radius: 3px;
+  transition: width 60ms ease;
 }
 
 .channel-state {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   text-align: right;
   color: var(--dim);
@@ -741,79 +750,7 @@ body {
 }
 
 .channel-row.active {
-  background: rgba(43, 255, 0, 0.04);
-}
-
-/* Live UART Stream Log */
-.uart-log-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--raised);
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  overflow: hidden;
-  margin-top: 2px;
-}
-
-.uart-log-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 12px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-}
-
-.uart-log-title {
-  font-size: 10.5px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.uart-log-rate {
-  font-size: 9.5px;
-  font-weight: 500;
-  color: var(--dim);
-  font-family: var(--mono);
-}
-
-.uart-log-body {
-  padding: 6px 12px;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  line-height: 1.5;
-  height: 72px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  background: #090A0C;
-}
-
-.uart-line {
-  color: var(--text);
-  white-space: nowrap;
-}
-
-.uart-line.muted {
-  color: var(--dim);
-  font-style: italic;
-}
-
-.uart-line .ts {
-  color: var(--dim);
-  margin-right: 6px;
-}
-
-.uart-line .tx {
-  color: var(--led-on);
-  font-weight: 600;
-  margin-right: 6px;
-}
-
-.uart-line .payload {
-  color: var(--text);
-  font-weight: 600;
+  background: rgba(43, 255, 0, 0.03);
 }
 
 /* Last command row (plain, not a console) */

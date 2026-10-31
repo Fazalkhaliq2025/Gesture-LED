@@ -199,7 +199,6 @@
    * Dispatch command frame directly to ESP32 over Web Serial.
    */
   async function sendCommand(cmd) {
-    logUartCommand(cmd);
     if (serialWriter) {
       try {
         await serialWriter.write(cmd + '\n');
@@ -211,34 +210,18 @@
     }
   }
 
-  function logUartCommand(cmd) {
-    const d = new Date();
-    const ts = d.toTimeString().split(' ')[0] + '.' + String(d.getMilliseconds()).padStart(3, '0');
-    const logBodies = document.querySelectorAll('.uart-log-body');
-    logBodies.forEach(body => {
-      const initLine = body.querySelector('.muted');
-      if (initLine) initLine.remove();
-
-      while (body.children.length >= 6) {
-        body.removeChild(body.firstChild);
-      }
-      const line = document.createElement('div');
-      line.className = 'uart-line';
-      line.innerHTML = `<span class="ts">${ts}</span><span class="tx">TX ➔</span><span class="payload">${cmd}</span>`;
-      body.appendChild(line);
-      body.scrollTop = body.scrollHeight;
-    });
-  }
-
-  function updateChannelMatrix(states, duties) {
+  function updateChannelMatrix(states, duties, fills) {
     for (let i = 0; i < 5; i++) {
       const rows = document.querySelectorAll(`.ch-row-${i}`);
       const vals = document.querySelectorAll(`.ch-val-${i}`);
+      const bars = document.querySelectorAll(`.ch-bar-${i}`);
       const isActive = states[i];
       const dutyText = duties ? duties[i] : (isActive ? 'ON (100%)' : 'OFF');
+      const fillPct = fills ? fills[i] : (isActive ? '100%' : '0%');
 
       rows.forEach(r => r.classList.toggle('active', !!isActive));
       vals.forEach(v => v.textContent = dutyText);
+      bars.forEach(b => b.style.width = fillPct);
     }
   }
 
@@ -289,7 +272,11 @@
       led.classList.remove('active');
       led.style.opacity = '1';
     });
-    updateChannelMatrix([false, false, false, false, false]);
+    updateChannelMatrix(
+      [false, false, false, false, false],
+      ['OFF', 'OFF', 'OFF', 'OFF', 'OFF'],
+      ['0%', '0%', '0%', '0%', '0%']
+    );
   }
 
   function setVirtualLedsState(allOn) {
@@ -297,7 +284,10 @@
       led.classList.toggle('active', allOn);
       led.style.opacity = '1';
     });
-    updateChannelMatrix([allOn, allOn, allOn, allOn, allOn]);
+    const stateArr = [allOn, allOn, allOn, allOn, allOn];
+    const dutyArr = stateArr.map(s => s ? 'ON (100%)' : 'OFF');
+    const fillArr = stateArr.map(s => s ? '100%' : '0%');
+    updateChannelMatrix(stateArr, dutyArr, fillArr);
   }
 
   function setVirtualLedsBrightness(brightness) {
@@ -313,10 +303,12 @@
     });
     const pct = Math.round((brightness / 255) * 100);
     const txt = brightness > 0 ? `${pct}% (${brightness})` : 'OFF (0%)';
+    const fill = `${pct}%`;
     const isActive = brightness > 0;
     updateChannelMatrix(
       [isActive, isActive, isActive, isActive, isActive],
-      [txt, txt, txt, txt, txt]
+      [txt, txt, txt, txt, txt],
+      [fill, fill, fill, fill, fill]
     );
   }
 
@@ -327,7 +319,8 @@
     });
     const states = [0, 1, 2, 3, 4].map(i => i < count);
     const duties = states.map(s => s ? 'ON (100%)' : 'OFF');
-    updateChannelMatrix(states, duties);
+    const fills = states.map(s => s ? '100%' : '0%');
+    updateChannelMatrix(states, duties, fills);
   }
 
   // ============================================================================
